@@ -1,14 +1,15 @@
 <template>
-  <div id="#app">
-    <router-view />
+  <div>
+    <p>Login Component</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
+  name: 'LoginIndex',
   data () {
     return {
+
     }
   }
 }
