@@ -1,7 +1,7 @@
-import request from '@/utils/request'
 /**
  * 封装用户相关接口请求函数
  */
+import request from '@/utils/request'
 
 export const login = ({
   mobile,

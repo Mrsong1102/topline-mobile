@@ -17,8 +17,8 @@
       </van-cell-group>
       <div class="login-btn">
         <van-button class="btn"
-                    @click="handleLogin"
-                    type="info">登录</van-button>
+                    type="info"
+                    @click.prevent="handleLogin">登录</van-button>
       </div>
     </form>
   </div>
