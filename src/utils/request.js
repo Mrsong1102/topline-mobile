@@ -10,7 +10,8 @@ import axios from 'axios'
  *    http://b.com
  */
 const request = axios.create({
-  baseURL: 'http://ttapi.research.itcast.cn'
+  baseURL: 'http://ttapi.research.itcast.cn' // 线上
+  // baseURL: 'http://toutiao.course.itcast.cn'  // 本地
 })
 
 // Add a request interceptor
