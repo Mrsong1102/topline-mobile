@@ -24,7 +24,8 @@
       <div class="login-btn">
         <van-button class="btn"
                     type="info"
-                    @click.prevent="handleLogin">登录</van-button>
+                    @click.prevent="handleLogin"
+                    :loading="loginLoading">登录</van-button>
       </div>
     </form>
   </div>
@@ -39,7 +40,8 @@ export default {
       user: {
         mobile: '18303610801',
         code: '246810'
-      }
+      },
+      loginLoading: false // 控制登录请求的loading状态
     }
   },
 
@@ -49,21 +51,30 @@ export default {
 
   methods: {
     async handleLogin () {
+      this.loginLoading = true
       try {
-        this.$validator.validate().then(async valid => {
-          // 如果表单验证失败，则什么都不做
-          if (!valid) {
-            return
-          }
-          // 表单验证通过，提交表单
-          const data = await login(this.user)
-          // 通过提交mutation更新Vuex容器中的装填,完成对状态的修改
-          this.$store.commit('setUser', data)
+        // 这个插件验证失败的时候没有抛出异常
+        const valid = await this.$validator.validate()
+        // 如果表单验证失败，则什么都不做
+        if (!valid) {
+          // 验证失败，代码不会往后执行了，所以在这里也要取消 loading
+          this.loginLoading = false
+          return
+        }
+        // 表单验证通过，提交表单
+        const data = await login(this.user)
+        // 通过提交mutation更新Vuex容器中的装填,完成对状态的修改
+        this.$store.commit('setUser', data)
+
+        // 登录成功跳转到首页
+        this.$router.push({
+          name: 'home'
         })
       } catch (err) {
         console.log(err)
-        console.log('登录失败!')
+        this.$toast.fail('登录失败！')
       }
+      this.loginLoading = false
     },
 
     configCustomMessages () {
