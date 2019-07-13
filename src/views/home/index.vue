@@ -1,11 +1,13 @@
 <template>
   <div>
     <div class="home">
-      <van-nav-bar title="首页" />
+      <van-nav-bar title="首页"
+                   fixed />
       <!--
         activeChannelIndex 绑定当前激活的标签页，使用索引
        -->
-      <van-tabs v-model="activeChannelIndex">
+      <van-tabs class="channel-tabs"
+                v-model="activeChannelIndex">
         <van-tab title="标签 1">
           <!--
             下拉刷新
@@ -76,4 +78,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.channel-tabs {
+  margin-bottom: 100px;
+}
+// 深度作用选择器
+.channel-tabs /deep/ .van-tabs__wrap {
+  position: fixed;
+  top: 92px;
+}
+
+.channel-tabs /deep/ .van-tabs__content {
+  margin-top: 96px;
+}
 </style>
