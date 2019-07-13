@@ -1,6 +1,9 @@
 <template>
   <div>
-    <p>Home Component</p>
+    <div class="home">
+      <van-nav-bar title="首页" />
+
+    </div>
   </div>
 </template>
 
