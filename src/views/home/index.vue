@@ -65,6 +65,21 @@ export default {
     }
   },
 
+  watch: {
+    // 监视容器中的user用户
+    // 记住：凡是能this. 点儿出来的成员都可以直接在这里监视
+    // 由于路由缓存了，所以这里监视用户的登录状态，如果登录了，则重新加载用户的频道列表
+    async '$store.state.user' () {
+      // 重新加载用户频道列表
+      this.loadChannels()
+
+      // 频道数据改变，重新加载当前激活频道的数据
+      // 只需要将上拉加载更多设置为true，他就会自动调用onload请求函数
+      this.activeChannel.upPullLoading = true
+      // this.onLoad()
+    }
+  },
+
   created () {
     this.loadChannels()
   },
