@@ -16,8 +16,10 @@
             isLoading 用来控制下拉树新的loading状态，下拉刷新的时候，它会自动将loading设置为true
             @refresh当下拉刷新的时候会触发
            -->
-          <van-pull-refresh v-model="isLoading"
-                            @refresh="onRefresh">
+          <van-pull-refresh v-model="channelItem.downPullLoading"
+                            @refresh="onRefresh"
+                            :success-text="channelItem.downPullSuccessText"
+                            :success-duration="1000">
             <!-- 列表组件：主要提供上拉加载更多的功能
               loading 用来控制是否加载完毕
               finished 用来控制是否加载完毕
@@ -162,11 +164,34 @@ export default {
     /**
      * 下拉刷新，如果有新数据，则是重置列表数据
      */
-    onRefresh () {
-      console.log('onRefresh')
-      setTimeout(() => {
-        this.isLoading = false
-      }, 2000)
+    async onRefresh () {
+      const { activeChannel } = this
+      // 备份加载下一页数据的时间戳
+      const timestamp = activeChannel.timestamp
+
+      activeChannel.timestamp = Date.now()
+      const data = await this.loadArticles()
+
+      // 如果有最新数据，将数据更新到频道的文章列表中
+      if (data.results.length) {
+        // 将当前最新的推荐内容重置到频道文章中
+        activeChannel.articles = data.results
+        // 由于你重置了文章列表，那么当前数据中的 pre_timestamp 就是上拉加载更多的下一页数据的时间戳
+        activeChannel.timestamp = data.pre_timestamp
+        activeChannel.downPullSuccessText = '更新成功'
+
+        // 当下拉刷新有数据并重置以后数据无法满足一瓶，所以我们使用onload 在多加载一页数据
+        this.onLoad()
+      } else {
+        // 如果没有最新数据，提示已是最新内容
+        activeChannel.downPullSuccessText = '已是最新数据'
+      }
+
+      // 下拉刷新结束，取消loading状态
+      activeChannel.downPullLoading = false
+
+      // 没有最新数据，将原来的用于请求下一页的时间戳恢复过来
+      activeChannel.timestamp = timestamp
     },
 
     async loadArticles () {
