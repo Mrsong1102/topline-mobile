@@ -38,7 +38,7 @@ export default {
   data () {
     return {
       user: {
-        mobile: '18303610801',
+        mobile: '18801185985',
         code: '246810'
       },
       loginLoading: false // 控制登录请求的loading状态

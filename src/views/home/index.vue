@@ -89,6 +89,9 @@ export default {
       this.channels = channels
     },
 
+    /**
+     * 上拉加载更多，push数据
+     */
     onLoad () {
       // 异步更新数据
       setTimeout(() => {
@@ -105,6 +108,9 @@ export default {
       }, 500)
     },
 
+    /**
+     * 下拉刷新，如果有新数据，则是重置列表数据
+     */
     onRefresh () {
       console.log('onRefresh')
       setTimeout(() => {
