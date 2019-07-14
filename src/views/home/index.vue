@@ -8,6 +8,10 @@
        -->
       <van-tabs class="channel-tabs"
                 v-model="activeChannelIndex">
+        <div slot="nav-right"
+             class="wap-nav">
+          <van-icon name="wap-nav" />
+        </div>
         <van-tab v-for="channelItem in channels"
                  :key="channelItem.id"
                  :title="channelItem.name">
@@ -234,5 +238,14 @@ export default {
 
 .channel-tabs /deep/ .van-tabs__content {
   margin-top: 96px;
+}
+
+.channel-tabs /deep/ .wap-nav {
+  position: fixed;
+  right: 0;
+  background: #fff;
+  padding-top: 10px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 </style>
