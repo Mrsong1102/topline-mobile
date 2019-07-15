@@ -48,7 +48,7 @@
        v-on:input="数据=$event"
      -->
     <HomeChannel v-model="isChannelShow"
-                 :channels="channels"
+                 :user-channels="channels"
                  :active-index="activeChannelIndex" />
     <!-- 频道管理组件 -->
   </div>
