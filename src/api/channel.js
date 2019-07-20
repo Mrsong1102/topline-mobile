@@ -34,3 +34,20 @@ export const deleteUserChannel = channelId => {
     url: `/app/v1_0/user/channels/${channelId}`
   })
 }
+
+/**
+ * 批量修改用户频道列表（重置）
+ * channels: []
+ * {id:频道id, seq: 顺序的序号}
+ * 数据的顺序都从2开始
+ * 因为推荐是用户默认频道，推荐从 1 开始
+ */
+export const resetUserChannels = channels => {
+  return request({
+    method: 'PUT',
+    url: `/app/v1_0/user/channels`,
+    data: {
+      channels
+    }
+  })
+}
