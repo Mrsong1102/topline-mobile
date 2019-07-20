@@ -1,7 +1,7 @@
 <template>
   <van-popup :style="{ height: '95%' }"
              :value="value"
-             @input="$emit('input',$event)"
+             @input="$emit('input', $event)"
              position="bottom"
              get-container="body"
              :lazy-render="false">
@@ -24,7 +24,7 @@
                 clickable>
         <van-grid-item v-for="(item, index) in userChannels"
                        :key="item.id"
-                       text="文字">
+                       @click="handleUserChannelClick(item, index)">
           <span class="text"
                 :class="{active:index === activeIndex && !isEdit}">{{item.name}}</span>
           <van-icon class="close-icon"
@@ -124,6 +124,25 @@ export default {
 
       // 如果未登录，则将数据持久化到本地存储
       window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
+    },
+
+    changeChannel (item, index) {
+      this.$emit('update:active-index', index)
+      this.$emit('input', false)
+    },
+
+    deleteChannel () {
+      console.log('deleteChannel')
+    },
+
+    handleUserChannelClick (item, index) {
+      if (!this.isEdit) {
+        // 非编辑状态：切换频道
+        this.changeChannel(item, index)
+      } else {
+        // 编辑状态切换频道
+        this.deleteChannel(item, index)
+      }
     }
   }
 }
