@@ -107,6 +107,13 @@ export default {
       this.activeChannel.upPullLoading = true
       // this.onLoad()
     }
+    // isChannelShow () {
+    //   // 如果频道面板隐藏了，并且当前频道没有数据，那我们就手动的onload加载更多
+    //   if (!this.isChannelShow && !this.activeChannel.articles.length) {
+    //     this.activeChannel.upPullLoading = true
+    //     this.onLoad()
+    //   }
+    // }
   },
 
   created () {

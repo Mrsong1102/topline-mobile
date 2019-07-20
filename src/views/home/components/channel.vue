@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channel'
+import { getAllChannels, deleteUserChannel } from '@/api/channel'
 import { mapState } from 'vuex'
 export default {
   name: 'HomeChannel',
@@ -110,6 +110,13 @@ export default {
   methods: {
     async loadAllChannels () {
       const data = await getAllChannels()
+      data.channels.forEach(item => {
+        item.articles = [] // 用来储存当前文章的列表
+        item.timestamp = Date.now() // 储存下一页数据的时间戳
+        item.downPullLoading = false // 控制当前频道的下拉刷新loading状态
+        item.upPullLoading = false // 控制当前频道的上拉加载更多的loading状态
+        item.upPullFinished = false // 控制当前频道数据是否加载完毕
+      })
       this.allChannels = data.channels
     },
 
@@ -131,8 +138,20 @@ export default {
       this.$emit('input', false)
     },
 
-    deleteChannel () {
-      console.log('deleteChannel')
+    async deleteChannel (item, index) {
+      this.userChannels.splice(index, 1)
+
+      // TODO:删除当前频道，下一个激活的频道没有数据的问题
+      // 手动设置一下当前激活的标签索引，用来触发那个onload调用，否则可能会看不到那个数据
+      // 判断当前激活频道中是否有数据，如果没有则手动的onLoad一下
+
+      if (this.user) {
+        // 登录：发请求删除
+        await deleteUserChannel(item.id)
+        return
+      }
+      // 未登录，删除本地存储的数据
+      window.localStorage.setItem('channels', JSON.stringify(this.userChannels))
     },
 
     handleUserChannelClick (item, index) {
